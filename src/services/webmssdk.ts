@@ -1,3 +1,9 @@
+// @ts-nocheck
+export function initWebmssdk(window: any) {
+  const document = window.document;
+  const navigator = window.navigator;
+  const screen = window.screen;
+  // Original content starts
 /**
  * Modified version from https://github.com/carcabot/tiktok-signature/issues/140#issuecomment-1194196455
  * Originally from https://lf3-cdn-tos.bytescm.com/obj/rc-web-sdk/webmssdk/1.0.0.211/webmssdk.js
@@ -4584,3 +4590,6 @@ var _0x1cf232 = _0x17953f;
   (_0x5ec876.setTTWid = _0x1e0442),
   (_0x5ec876.setUserMode = _0x328500),
   Object.defineProperty(_0x5ec876, "__esModule", { value: !0 });
+
+  // Original content ends
+}

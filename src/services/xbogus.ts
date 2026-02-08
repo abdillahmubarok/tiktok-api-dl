@@ -1,3 +1,5 @@
+// @ts-nocheck
+globalThis.JS_MD5_NO_NODE_JS = true;
 var window = null;
 
 function _0x5cd844(e) {
@@ -560,4 +562,4 @@ function sign(e, b) {
 }
 
 //export text function
-module.exports = sign;
+export default sign;
