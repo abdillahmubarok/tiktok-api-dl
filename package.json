@@ -7,8 +7,9 @@
   "scripts": {
     "build": "tsc",
     "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js",
-    "start:server": "ts-node src/server.ts"
-  },
+    "start:dev": "ts-node src/server.ts", 
+    "start": "node lib/server.js" 
+},
   "bin": {
     "tiktokdl": "./lib/cli/index.js"
   },
