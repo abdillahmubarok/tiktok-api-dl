@@ -6,7 +6,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js"
+    "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js",
+    "start:server": "ts-node src/server.ts"
   },
   "bin": {
     "tiktokdl": "./lib/cli/index.js"
@@ -38,7 +39,9 @@
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "commander": "^11.0.0",
+    "cors": "^2.8.6",
     "crypto-js": "^4.2.0",
+    "express": "^5.2.1",
     "https-proxy-agent": "^7.0.5",
     "jsdom": "^26.0.0",
     "node-fetch": "^2.7.0",
@@ -50,6 +53,8 @@
   "devDependencies": {
     "@types/async-retry": "^1.4.9",
     "@types/cheerio": "^0.22.31",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^18.15.11",
     "@types/qs": "^6.9.17",
     "typescript": "^5.0.3"
