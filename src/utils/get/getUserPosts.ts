@@ -10,7 +10,7 @@ import { SocksProxyAgent } from "socks-proxy-agent"
 import { StalkUser } from "../get/getProfile"
 import retry from "async-retry"
 // @ts-ignore
-import xbogus from "../../../helper/xbogus"
+import xbogus from "../../services/xbogus"
 
 /**
  * Get user posts from TikTok

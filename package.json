@@ -6,7 +6,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js"
+    "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js",
+    "start:server": "tsx src/server.ts"
   },
   "bin": {
     "tiktokdl": "./lib/cli/index.js"
@@ -33,18 +34,20 @@
   },
   "homepage": "https://github.com/TobyG74/tiktok-api-dl#readme",
   "dependencies": {
+    "@hono/node-server": "^1.19.9",
     "async-retry": "^1.3.3",
     "axios": "^1.3.4",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "commander": "^11.0.0",
     "crypto-js": "^4.2.0",
+    "hono": "^4.11.9",
     "https-proxy-agent": "^7.0.5",
-    "jsdom": "^26.0.0",
     "node-fetch": "^2.7.0",
     "qs": "^6.12.0",
     "socks-proxy-agent": "^8.0.4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
