@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "vercel-build": "tsc -p tsconfig.vercel.json",
     "build": "tsc",
     "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js"
   },
