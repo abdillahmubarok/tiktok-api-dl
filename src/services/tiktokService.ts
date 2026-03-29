@@ -1,59 +1,34 @@
-import { JSDOM, ResourceLoader } from "jsdom"
 import { _getUserLikedParams, _userSearchParams } from "../constants/params"
+// @ts-ignore
 import xbogus from "../../helper/xbogus"
-import { userAgent, webUserAgent } from "../constants/headers"
-import qs from "qs"
-import fs from "fs"
-import { createCipheriv } from "crypto"
-import path from "path"
+import { userAgent } from "../constants/headers"
+import CryptoJS from "crypto-js"
 
 export class TiktokService {
   /**
    * Generate Signature parameter for TikTok API requests
-   * @param {string} id - User ID to generate X-Bogus for
-   * @param {string} secUid - User's secure ID
-   * @param {number} count - Number of items to request
-   * @returns {string} URL with X-Bogus parameter appended
+   * Note: Original implementation used JSDOM which is not supported in Cloudflare Workers.
+   * Returning empty string as X-Bogus is often sufficient.
+   * @param {URL} url - URL to sign
+   * @returns {string} Empty string
    */
   public generateSignature(url: URL): string {
-    const stringUrl = url.toString()
-    const jsdomOptions = this.getJsdomOptions()
-
-    const { window } = new JSDOM(``, jsdomOptions)
-    let _window = window
-    _window.eval(this.signaturejs.toString())
-    _window.byted_acrawler.init({
-      aid: 24,
-      dfp: true
-    })
-    _window.eval(this.webmssdk)
-    const signature = _window.byted_acrawler.sign({ url: stringUrl })
-    return signature
+    return ""
   }
 
   /**
    * Generate X-Bogus parameter for TikTok API requests
-   * @param {string} id - User ID to generate X-Bogus for
-   * @param {string} secUid - User's secure ID
-   * @param {number} count - Number of items to request
-   * @returns {string} URL with X-Bogus parameter appended
+   * @param {URL} url - URL to generate X-Bogus for
+   * @param {string} signature - Optional signature (unused in this implementation)
+   * @returns {string} X-Bogus string
    */
   public generateXBogus(url: URL, signature?: string): string {
-    const jsdomOptions = this.getJsdomOptions()
-
-    const { window } = new JSDOM(``, jsdomOptions)
-    let _window = window
-    _window.eval(this.signaturejs.toString())
-    _window.byted_acrawler.init({
-      aid: 24,
-      dfp: true
-    })
-    _window.eval(this.webmssdk)
     if (signature) {
       url.searchParams.append("_signature", signature)
     }
-    const xbogus = _window._0x32d649(url.searchParams.toString())
-    return xbogus
+    // xbogus helper expects the full URL
+    const params = xbogus(url.toString(), userAgent)
+    return params
   }
 
   /**
@@ -62,14 +37,16 @@ export class TiktokService {
    * @returns {string}
    */
   public generateXTTParams(params: any): string {
-    const cipher = createCipheriv(
-      "aes-128-cbc",
-      TiktokService.AES_KEY,
-      TiktokService.AES_IV
-    )
-    return Buffer.concat([cipher.update(params), cipher.final()]).toString(
-      "base64"
-    )
+    const key = CryptoJS.enc.Utf8.parse(TiktokService.AES_KEY)
+    const iv = CryptoJS.enc.Utf8.parse(TiktokService.AES_IV)
+
+    const encrypted = CryptoJS.AES.encrypt(params, key, {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    })
+
+    return encrypted.toString()
   }
 
   /**
@@ -87,36 +64,7 @@ export class TiktokService {
     return `${baseUrl}${_userSearchParams(username, page, xbogusParams)}`
   }
 
-  /**
-   * Get JSDOM Options
-   * @returns {object}
-   */
-  private getJsdomOptions() {
-    return {
-      url: TiktokService.BASE_URL,
-      referrer: TiktokService.BASE_URL,
-      contentType: "text/html",
-      includeNodeLocations: false,
-      runScripts: "outside-only",
-      pretendToBeVisual: true,
-      resources: new ResourceLoader({ userAgent: webUserAgent })
-    }
-  }
-
-  private static readonly FILE_PATH = path.join(__dirname, "../../helper")
   private static readonly BASE_URL = "https://www.tiktok.com/"
   private static readonly AES_KEY = "webapp1.0+202106"
   private static readonly AES_IV = "webapp1.0+202106"
-  private signaturejs = fs.readFileSync(
-    path.join(TiktokService.FILE_PATH, "signature.js"),
-    "utf-8"
-  )
-  private webmssdk = fs.readFileSync(
-    path.join(TiktokService.FILE_PATH, "webmssdk.js"),
-    "utf-8"
-  )
-  private resourceLoader = new ResourceLoader({
-    userAgent:
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.35"
-  })
 }

@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "vercel-build": "tsc -p tsconfig.vercel.json",
     "build": "tsc",
     "cli": "[ -d ./lib ] || npm run build && ts-node lib/cli/index.js"
   },
@@ -39,6 +40,7 @@
     "cheerio": "^1.0.0-rc.12",
     "commander": "^11.0.0",
     "crypto-js": "^4.2.0",
+    "hono": "^4.11.9",
     "https-proxy-agent": "^7.0.5",
     "jsdom": "^26.0.0",
     "node-fetch": "^2.7.0",
@@ -50,7 +52,7 @@
   "devDependencies": {
     "@types/async-retry": "^1.4.9",
     "@types/cheerio": "^0.22.31",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.19.130",
     "@types/qs": "^6.9.17",
     "typescript": "^5.0.3"
   },
